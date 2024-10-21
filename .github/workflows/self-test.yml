@@ -1,0 +1,25 @@
+name: Self Test Network Integration
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: null
+jobs:
+  self-test-network-integration:
+    uses: ./.github/workflows/network_integration.yaml
+    with:
+      lab_title: cisco_nxos
+      network_os: cisco.nxos.nxos
+      pytest_addopts: "--color=yes -n 2"
+      collection_pre_install: >-
+        git+https://github.com/ansible-collections/ansible.utils.git
+        git+https://github.com/ansible-collections/ansible.netcommon.git
+      dry_run: true
+      dry_run_repo: ansible-collections/cisco.nxos
+    secrets:
+      cml_ssh_password: "selftest-user" # These are placeholder values
+      virl_password: "selftest-pass"
+      virl_host: "examplehost"
